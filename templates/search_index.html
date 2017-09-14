@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% from "macros/form_field.html" import form_field %}
+{% block title %}Log in{% endblock %}
+{% block content_title %}Log in{% endblock %}
+{% block content %}
+    <form action="{{ url_for('search', next=request.args.get('next',''))}}" class="form form-horizontal" method="get">
+        {{ form_field(form.q) }}
+        
+        <div class="form-group">
+            <div class="col-md-12">
+                Search: <input type="text" id="search_form_input"></input>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default">Search</button>
+                <a class="btn" href="{{ url_for('homepage') }}">Cancel</a>
+            </div>
+        </div>
+    </form>
+
+    <div id="place_for_suggestions">
+        <!-- It's results !-->
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script>
+        $("#search_form_input").keyup(function(){
+            var text = $(this).val();
+
+            $.ajax({
+                url: "/search/",
+                type: "get",
+                data: {q: text},
+                success: function(response) {
+                    $("#place_for_suggestions").html(response);
+                },
+                error: function(xhr) {
+                    //Do Something to handle error
+                }
+            });
+        });
+    </script>
+{% endblock %}

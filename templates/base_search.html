@@ -1,0 +1,117 @@
+{% from "macros/form_field.html" import form_field %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="icon" href="{{ url_for('static', filename='images/behaq_icon_2.png') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"/>
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}"/> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-toggle.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+        
+
+        {% block extra_styles %}{% endblock %}
+                        
+        <script src="{{ url_for('static', filename='js/jquery-1.10.2.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap-toggle.min.js') }}"></script>
+        {% block extra_scripts %}{% endblock %}
+    </head>
+    <body  style="background : #E9EAED;" >
+        <div style="background : #18aecc; height : 8px;"></div>
+        <div class='card-header promo' style='height : 75px; box-shadow: 0px 0px 2px #888888; margin-top:0px !important; margin-bottom:10px !important; padding:0px !important;'>
+            <div class='wrap'>
+                {% block search_box %}{% endblock %}
+            </div>
+        </div>
+        <!-- <div class='card-header promo' style='height : 35px !important; padding:5px; box-shadow: 0px 0px 2px #888888; margin-top:0px !important; margin-bottom:10px; background : #f7f7f7;'>
+            <div class='wrap'>
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <div class='col-md-1'><a href="{{ url_for('search')}}">Web</a></div>
+                    <div class='col-md-1'><a href="{{ url_for('news') }}">Berita</a></div>
+                </div>
+            </div>
+        </div> -->
+
+        <div class='row'>
+            <div class='wrap'>
+                <div class='col-md-12'>
+                    <svg class="loader" style="height : 20px; display:none; margin-bottom : 10px; margin-top: -10px;">
+                        <defs>
+                        <filter id="gooey">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
+                            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"></feColorMatrix>
+                            <feBlend in="SourceGraphic" in2="goo"></feBlend>
+                        </filter>
+                        </defs>
+                    </svg>
+                    <div class="blob blob-0" style='display:none;'></div>
+                    <div class="blob blob-1" style='display:none;'></div>
+                    <div class="blob blob-2" style='display:none;'></div>
+                    <div class="blob blob-3" style='display:none;'></div>
+                    <div class="blob blob-4" style='display:none;'></div>
+                    <div class="blob blob-5" style='display:none;'></div>
+                </div>
+            </div>
+        </div>
+
+        {% if data %}
+            <div class='row'>
+                <div class='wrap'>
+                    <div class='col-md-12'>
+                        <div class='row'>
+                            <div class='col-md-3'>
+                                <div class='card-content' style="box-shadow: 0px 0px 2px #888888; ">
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="canvas-holder" style="width:100%">
+                                            {% block graph_box %}{% endblock %}
+                                            {% block related_box %}{% endblock %}
+                                        </div>
+                                    </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-md-9'>
+                                <div class='card-content' style='box-shadow: 0px 0px 2px #888888; '>
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                        {% block result_box %}{% endblock %}
+                                        {% block pagination %}{% endblock %}
+                                        <!-- <img src="{{ url_for('static', filename='images/search.png') }}"> -->
+                                    </div>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+        
+        <div class='row'>
+            <div class='wrap'>
+                <div class='col-md-3'></div>
+                <div class='col-md-6'>        
+                    <img class="logo" src="{{ url_for('static', filename='images/no_search.png') }}" style='width :100%; margin-top : 30px; text-align : center;'/>
+                </div>
+                <div class='col-md-3'></div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+            <hr />
+            <footer>
+                <!-- <p>&copy; your name</p> -->
+            </footer>
+        </div>
+    </body>
+</html>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+</script>

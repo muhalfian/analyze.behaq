@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "macros/form_field.html" import form_field %}
+{% block title %}Log in{% endblock %}
+{% block content_title %}Log in{% endblock %}
+{% block content %}
+    <form action="{{ url_for('login', next=request.args.get('next',''))}}" class="form form-horizontal" method="post">
+        {{ form_field(form.email) }}
+        {{ form_field(form.password) }}
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="checkbox">
+                <label>{{ form.remember_me() }} Remember me</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default">Log in</button>
+                <a class="btn" href="{{ url_for('homepage') }}">Cancel</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

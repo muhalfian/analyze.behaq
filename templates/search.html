@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
+{% block content_title %}Search{% endblock %}
+{% block content %}
+    {% for result in data['webPages']['value'] %}
+        <div clas=''>
+            <h3><a href="{{ result['url'] }}">{{ result['name'] }}</a></h3>
+            <h6><a href="">{{ result['displayUrl'] }}</a></h6>
+            <div class=''>
+                {{ result['snippet'] }}
+            </div>
+
+        </div>
+    {% endfor %}
+
+    
+{% endblock %}

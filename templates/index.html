@@ -1,0 +1,184 @@
+{% extends "base_search.html" %}
+{% from "macros/form_field.html" import form_field %}
+{% block title %}beHaq Analyze{% endblock %}
+
+{% block search_box %}
+    <form id="search_form" action="{{ url_for('search', next=request.args.get('next',''))}}" method="get">
+        <div class="col-md-3">
+            <a href="#!">
+                <img class="logo" src="{{ url_for('static', filename='images/parrots_right.png') }}" style='float:left ;height : 60px;margin-top:3px;'/>
+                <img class="logo" src="{{ url_for('static', filename='images/behaq_letter.png') }}" style='float:left ;height : 30px; margin-right : 5px; margin-top:23px;'/>
+                <div style="font-weight:normal; font-style:normal; margin-left:-20px;margin-top:13px;">Analyze</div>
+            </a>
+        </div>
+        <div class="col-md-9">
+            <textarea name='q' type='text' style='float : left; width:75%; border : 1px solid #0CB9AE; padding : 5px 10px; background : #fff; font-weight : normal; font-style:normal; height : 50px; margin-top:13px;' maxlength="680" placeholder='Cari kata yang meragukan'>{% if data %}{{data['queryContext']['originalQuery']}}{% endif %}</textarea>
+            
+            <button type='submit' id="cari" class='read-more' style='font-size : 15pt; margin-left : 0px; float:left; margin-top: 13px !important;'>
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Cari 
+            </button>
+            
+            <script>
+                $("#cari").click(function(){
+                    $(".loader").show();
+                    $(".blob").show();
+                });
+            </script>
+            {% if session['email'] %}
+                <!-- <a class='read-more' href="{{ url_for('logout_ustadz') }}" style='font-size : 10pt; margin-left : 0px; float:left; margin-top: 15px !important; background : #0c97b3 !important; color:#fff; float:right; '>Keluar</a> -->
+                <a class='read-more' style='background : #fff; font-size : 10pt; margin-left : 0px; float:left; margin-top: 15px !important; border : 1px solid #0c97b3 !important; color:#0c97b3; float:right;' href="{{ url_for('logout_ustadz') }}">keluar</a>
+            {% else %}
+                <a class='read-more' href="#" style='font-size : 10pt; margin-left : 0px; float:left; margin-top: 15px !important; background : #0c97b3 !important; color:#fff; float:right; ' data-toggle="modal" data-target="#login">Masuk</a>                
+            {% endif %}
+        </div>
+    </form>
+
+    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Login sebagai Ustadz</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class='row'>
+                            <div class='col-md-4'>
+                                <br>
+                                <form id="feedback_form" action="{{ url_for('login_ustadz') }}" method="post">
+                                    <div class="form-group">
+                                        <label>Email</label><br>
+                                        <input type="input" name='email' placeholder="email address" style='border-radius : 5px;border : 1px solid #0CB9AE; padding : 5px 10px;font-weight : normal; font-style:normal;'>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password</label><br>
+                                        <input type="password" name='password' placeholder="" style='border-radius : 5px;border : 1px solid #0CB9AE; padding : 5px 10px;font-weight : normal; font-style:normal;'>
+                                    </div>
+                                    <input class="btn btn-primary" type="submit" value="Masuk" style='float : right'>
+                                </form>
+                            </div>
+                            <div class='col-md-8'>
+                                <img class="logo" src="{{ url_for('static', filename='images/no_search.png') }}" style='width :100%; margin-top : 30px; text-align : center;'/>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <br>
+                            <!-- <p>No account? <a href='/register'>Register here</a>.</p> -->
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block result_box %}
+    {% if data %}
+    {% set id_rank = 0 %}
+        <div class='search-total'><i>Total pencarian {{ data['webPages']['totalEstimatedMatches'] }}</i></div>
+        {% for result in data['webPages']['value'] %}
+        
+            <div class='' style='margin : 0px 0px 20px;'>
+                <div class='row'>
+                    <div class='col-md-9'>
+                        <h4><a href="{{ result['url'] }}">{{ result['name'] }}</a></h4>
+                        <h6 style='margin-top : -7px;'><a href="{{ result['url'] }}">{{ result['displayUrl'] }}</a></h6>
+                        <div class='' style='font-size : 10pt;margin-top : -5px;'>
+                            {{ result['snippet'] }}
+                        </div>
+                    </div>
+                    <div class='col-md-3' style='float:right'>  
+                        <br>
+                        {% if result['status'] < 0.5 %} <span class = "label label-success" data-toggle="tooltip" data-placement="top" title="Konten terverifikasi dari filter HOAX.">Verified</span>                             
+                        {% else %} <span class="label label-danger" data-toggle="tooltip" data-placement="top" title="Konten bersifat HOAX ">Unverified</span>    
+                        {% endif %}
+                           
+                        {% if result['sentiment'] > 0 %} <span class = "label label-success" data-toggle="tooltip" data-placement="right" title="Konten bersifat positif dan aman.">pos [+]</span>
+                        {% elif result['sentiment'] < 0 %} <span class = "label label-danger" data-toggle="tooltip" data-placement="right" title="Hati hati karena konten kemungkinan mengandung kata provokatif atau negatif.">neg [-]</span>
+                        {% elif result['sentiment'] == 0 %} <span class = "label label-default" data-toggle="tooltip" data-placement="right" title="Konten bersifat netral atau konten tidak terbaca.">neu [o]</span>
+                        {% endif %}
+                        
+                        {% if session['email'] %}
+                            <div class='' style='font-size : 9pt; margin-top: 3px;'>Bantu kami <br><a href='#' data-toggle="modal" data-target="#exampleModal{{result['id_rank']}}" >beri tanggapan</a></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal{{result['id_rank']}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" id="{{result['id_rank']}}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="exampleModalLabel">Bantu kami Memverifikasi berita ini</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class='row'>
+                                    <div class='col-md-6'>
+                                        <div class=''><h5><a href="{{ result['url'] }}">{{ result['name'] }}</a></h5></div>
+                                        <textarea style='width:100%; height:200px'>{{ result['snippet'] }}</textarea>
+                                    </div>
+                                    <div class='col-md-6'>
+                                        <form id="feedback_form" action="{{ url_for('feedback') }}" method="post">
+                                            <div class="form-group">
+                                                <label>Termasuk kategori apakah artikel ini ?</label>
+                                                <input type="checkbox" name='status' checked data-toggle="toggle" data-on="Verified" data-off="Unverified" data-onstyle="success" data-offstyle="danger">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Berikan alasan Anda.</label>
+                                                <textarea name='reason' style='width:100%; height:100px'></textarea>
+                                            </div>
+                                            <input type='hidden' name='url' value="{{ result['url'] }}">
+                                            <input class="btn btn-primary" type="submit" value="Kirim" style='float : right'>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <br>
+                                    <!-- <p>No account? <a href='/register'>Register here</a>.</p> -->
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% set id_rank = id_rank + 1 %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block related_box %}
+    {% if data %}
+        {% if data['relatedSearches'] %}
+            <h4>Link Berkaitan</h4>
+            {% for result in data['relatedSearches']['value'] %}
+                <div class='' style='margin : 20px 0px;'>
+                    <h5><a href="{{ result['displayText'] }}">{{ result['displayText'] }}</a></h5>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block pagination %}
+    {% if data %}
+        {% if data['webPages'] %}
+            <ul class="pagination">
+                {% set total_result = data['webPages']['totalEstimatedMatches'] %}
+                {% set total_page = (data['webPages']['totalEstimatedMatches']/10) | int %}
+                {% if total_result > 99 %}
+                    {% set total_result = 100 %}
+                {% endif %}
+
+                <li class='active'><a href="#">1</a></li>
+                    {% for count in range(10, total_result, 10) %}
+                        <li><a href="?q={{data['queryContext']['originalQuery']}}&count=10&offset={{count}}">{{ (count/10) | int + 1 }}</a></li>
+                    {% endfor %}
+                <li><a href="#">...</a></li>
+            </ul>
+        {% endif %}
+    {% endif %}
+{% endblock %}
