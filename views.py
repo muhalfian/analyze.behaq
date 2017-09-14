@@ -1,4 +1,4 @@
-import datetime, http.client, urllib.request, urllib.parse, urllib.error, base64, json, requests, operator, re, nltk, gensim
+import datetime, http.client, urllib.request, urllib.parse, urllib.error, base64, json, requests, operator, re, nltk
 
 from flask import render_template, request, flash, redirect, url_for, Flask, request, session
 from flask_login import login_user, logout_user
