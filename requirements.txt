@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 aiohttp==2.2.5
 alembic==0.9.5
 asn1crypto==0.22.0
@@ -88,3 +89,12 @@ Werkzeug==0.12.2
 WTForms==2.1
 yarl==0.12.0
 zope.interface==4.4.2
+=======
+click==6.7
+Flask==0.12.2
+gunicorn==19.7.1
+itsdangerous==0.24
+Jinja2==2.9.6
+MarkupSafe==1.0
+Werkzeug==0.12.2
+>>>>>>> 91611d73569c03b8d98e8cb890233f064e8b5dee
