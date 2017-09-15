@@ -20,11 +20,11 @@ from decimal import Decimal, DecimalException
 # totalHoax = hoax_training_set.query.count()
 # totalHam = ham_training_set.query.count()
 
-# totalHoax = db.session.query(func.sum(hoax_count.qty).label('total')).all()[0][0]
-# totalHam = db.session.query(func.sum(ham_count.qty).label('total')).all()[0][0]
+totalHoax = db.session.query(func.sum(hoax_count.qty).label('total')).all()[0][0]
+totalHam = db.session.query(func.sum(ham_count.qty).label('total')).all()[0][0]
 
-totalHoax = 0
-totalHam = 0
+# totalHoax = 0
+# totalHam = 0
 
 # print(totalHoax)
 
