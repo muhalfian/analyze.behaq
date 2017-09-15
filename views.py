@@ -14,11 +14,6 @@ from dateutil import parser
 from app import app
 from app import login_manager
 from forms import LoginForm, SearchForm
-import MySQLdb
-conn_sql = MySQLdb.connect(host= "localhost",
-                user="root",
-                passwd="root",
-                db="behaq")
 
 @app.route('/')
 def homepage():
