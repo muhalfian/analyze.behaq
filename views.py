@@ -17,8 +17,7 @@ from forms import LoginForm, SearchForm
 
 @app.route('/')
 def homepage():
-    form = SearchForm()
-    return render_template('search_index.html', form=form)
+    return render_template("index.html")
 
 @app.route("/login/", methods=["GET", "POST"])
 def login():
