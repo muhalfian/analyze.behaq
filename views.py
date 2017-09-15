@@ -94,7 +94,7 @@ def search():
         offset=0
 
     if search:
-        headers = {'Ocp-Apim-Subscription-Key': 'd94125558b884a309dd71f9e1aa8b9fb'}
+        headers = {'Ocp-Apim-Subscription-Key': 'cfbabad517954c1f97ac66623a4fa7ee'}
         params = urllib.parse.urlencode({
             'q': search,
             'count': count,
