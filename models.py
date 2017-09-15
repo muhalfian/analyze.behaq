@@ -10,10 +10,10 @@ def _user_loader(user_id):
 def slugify(s):
     return re.sub('[^\w]+', '-', s).lower()
 
-entry_tags = db.Table('entry_tags',
-    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
-    db.Column('entry_id', db.Integer, db.ForeignKey('entry.id'))
-)
+# entry_tags = db.Table('entry_tags',
+#     db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+#     db.Column('entry_id', db.Integer, db.ForeignKey('entry.id'))
+# )
 
 class User(db.Model):    
     id = db.Column(db.Integer, primary_key=True)
