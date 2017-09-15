@@ -1,4 +1,5 @@
 import os
+import psycopg2
 
 class Configuration(object):
     APPLICATION_DIR = os.path.dirname(os.path.realpath(__file__))
