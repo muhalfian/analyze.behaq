@@ -129,5 +129,5 @@ def make_training_set(path, kind):
 
     # print(training_set)
 
-hoax_path = 'data/hoax/'
-make_training_set(hoax_path, "hoax")
+# hoax_path = 'data/hoax/'
+# make_training_set(hoax_path, "hoax")
