@@ -51,7 +51,7 @@ nltk==3.2.4
 numpy==1.13.1
 olefile==0.44
 parsel==1.2.0
-Pillow==4.2.1
+Pillow==6.2.0
 psycopg2==2.7.3
 pyasn1==0.3.2
 pyasn1-modules==0.0.11
